@@ -1,0 +1,151 @@
+class Max_Heap:
+    def max_heapify(self, arr, n, i):
+        largest = i
+        left = 2 * i + 1
+        right = 2 * i + 2
+
+        # Check if left child is larger than root
+        if left < n and arr[left] > arr[largest]:
+            largest = left
+
+        # Check if right child is larger than largest
+        if right < n and arr[right] > arr[largest]:
+            largest = right
+
+        # If the largest element is not the root, swap them
+        if largest != i:
+            arr[i], arr[largest] = arr[largest], arr[i]
+            # Recursively max heapify the affected subtree
+            self.max_heapify(arr, n, largest)
+
+    def delete_max(self, arr):
+        # If the heap is empty, return None
+        if len(arr) == 0:
+            return None
+        # If the heap has only one element, remove and return it
+        if len(arr) == 1:
+            return arr.pop(0)
+        # If the heap has more than one element, remove the root (which is the maximum) and fix the heap property
+        else:
+            max = arr[0]
+            arr[0] = arr.pop()
+            self.max_heapify(arr, len(arr), 0)
+            return max
+
+    def insert_node(self, arr, value):
+        arr.append(value)
+        i = len(arr)-1
+        # If the value is bigger than its parent, swap it with its parent until it reaches its correct position
+        while i > 0 and arr[(i-1)//2] < value:
+            arr[(i-1)//2], arr[i] = arr[i], arr[(i-1)//2]
+            i = (i-1)//2
+        return arr
+
+    def build_maxheap(self,arr):
+        n = len(arr)
+        # Starting from the last non-leaf node, perform max_heapify on each node to create a max heap
+        for i in range(n//2-1 ,-1 ,-1):
+            self.max_heapify(arr, n, i)
+
+    def print_heap(self, arr):
+        print(*arr)
+
+
+
+# ----------------------------------------------------------------------------------------------------
+
+class Min_Heap:
+
+    def min_heapify(self, arr, n, i):
+        smallest = i
+        left = 2 * i + 1
+        right = 2 * i + 2
+
+        # Check if left child is smaller than root
+        if left < n and arr[left] < arr[smallest]:
+            smallest = left
+
+        # Check if right child is smaller than largest
+        if right < n and arr[right] < arr[smallest]:
+            smallest = right
+
+        # If the smallest element is not the root, swap them
+        if smallest != i:
+            arr[i], arr[smallest] = arr[smallest], arr[i]
+            # Recursively min heapify the affected subtree
+            self.min_heapify(arr, n, smallest)
+
+    def delete_min(self, arr):
+        # If the heap is empty, return None
+        if len(arr) == 0:
+            return None
+        # If the heap has only one element, remove and return it
+        if len(arr) == 1:
+            return arr.pop(0)
+        # If the heap has more than one element, remove the root (which is the minimum) and fix the heap property
+        else:
+            min = arr[0]
+            arr[0] = arr.pop()
+            self.min_heapify(arr,0)
+            return min
+
+    def insert_node(self, arr, value):
+        arr.append(value)
+        i = len(arr)-1
+        # If the value is smaller than its parent, swap it with its parent until it reaches its correct position
+        while i > 0 and arr[(i-1)//2] > arr[i]:
+            arr[(i-1)//2], arr[i] = arr[i], arr[(i-1)//2]
+            i = (i-1)//2
+        return arr
+
+    def build_minheap(self,arr):
+        n = len(arr)
+        # Starting from the last non-leaf node, perform min_heapify on each node to create a min heap
+        for i in range(n//2-1, -1, -1):
+            self.min_heapify(arr, n, i)
+
+    def print_heap(self, arr):
+        print(arr)
+
+# ------------------------------------------------------------------------------------------------
+
+
+class HeapSort:
+
+    def build_heap(self, arr):
+        n = len(arr)
+        # Start from the last non-leaf node and work backwards
+        for i in range(n//2 - 1, -1, -1):
+            # Perform max heapify on each node or heapify each non-leaf
+            self.max_heapify(arr, n, i)
+
+    def max_heapify(self, arr, n, i):
+        largest = i
+        left = 2 * i + 1
+        right = 2 * i + 2
+
+        # Check if left child is larger than root
+        if left < n and arr[left] > arr[largest]:
+            largest = left
+
+        # Check if right child is larger than largest
+        if right < n and arr[right] > arr[largest]:
+            largest = right
+
+        # If the largest element is not the root, swap them
+        if largest != i:
+            arr[i], arr[largest] = arr[largest], arr[i]
+            # Recursively max heapify the affected subtree
+            self.max_heapify(arr, n, largest)
+
+    def heapsort(self, arr):
+        n = len(arr)
+        self.build_heap(arr)
+
+        # Swap the root (largest element) with the last element, then max heapify the remaining heap and while
+        # running loop each sorted one will be at the end of array
+        for i in range(n-1, -1, -1):
+            arr[i], arr[0] = arr[0], arr[i]
+            self.max_heapify(arr, i, 0)
+
+        return arr
